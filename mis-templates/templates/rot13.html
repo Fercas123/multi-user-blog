@@ -1,0 +1,13 @@
+{% extends "base.html"%}
+{% block content %}
+
+<form method="post">
+    <h1>Enter Some Text to Rot13:</h1>
+    <br>
+    <textarea style="margin: 20px; width: 400px; height: 150px;" name="text">{{text}} </textarea>
+    <br>
+    <br>
+    <input type=submit>
+</form>
+
+{% endblock %}
