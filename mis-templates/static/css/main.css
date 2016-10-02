@@ -1,0 +1,63 @@
+body{
+    font-family: neuton, sans-serif;
+    width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    }
+
+    .error{
+        color: #FF5D31
+    }
+
+    label{
+        display: block;
+        font-size: 20px;
+    }
+
+    input [type = text] {
+        width: 400px;
+        font-size: 20px;
+        padding: 2px;
+    }
+
+    textarea{
+        width: 400px;
+        height: 200px;
+        font-size: 17px;
+        font-family: monospace;
+    }
+
+    input[type = text]{
+        font-size: 24px;
+    }
+
+    .art{
+        margin-top: 20px;
+    }
+    h1{
+        margin-bottom: 0;
+    }
+    .art-title{
+        margin: 0;
+        font-weight: bold;
+        font-size: 20px;
+        text-transform: uppercase;
+    }
+
+    .art-body{
+        margin: 0;
+        font-size: 17px;
+        text-transform: none;
+        height: auto;
+    }
+    .heading{
+        margin-bottom: 40px;
+    }
+
+    .date{
+        font-size: 15px;
+        text-align: right;
+    }
+    .back{
+        text-align: right;
+    }
