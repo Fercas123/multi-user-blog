@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>My Blog</title>
+      <link href="https://fonts.googleapis.com/css?family=Neuton" rel="stylesheet">
+      <link type="text/css" rel="stylesheet" href="/static/css/main.css" />
+    </head>
+<body>
+
+    <div class="heading">
+      <h2><i>Your Post has been created</i></h2>
+      <div class="art-title">
+        <h1>{{post.title}}</h1>
+      </div>
+      <hr>
+      <div class="date">
+        {{post.created.strftime("%b %d, %Y")}}
+      </div>
+    </div>
+
+    <div class="art.body">
+      {{post.content}}
+    </div>
+    <div class="back">
+      <pre><a href="./">Go Back</a></pre>
+    </div>
+
+</body>
+</html>

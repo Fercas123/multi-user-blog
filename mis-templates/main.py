@@ -5,6 +5,7 @@ import jinja2
 import webapp2
 from string import letters
 
+from google.appengine.ext import db
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape= True)
@@ -20,6 +21,8 @@ class Handler(webapp2.RequestHandler):
 
     def render(self, template, **kw):
         self.write(self.render_str(template, **kw))
+
+
 
 #Shopping List Project
 class MainPage(Handler):
@@ -108,6 +111,60 @@ class Welcome(Handler):
         else:
             self.redirect('/signup')
 
+#Posting in the blog project
+def blog_key(name = 'default'):
+    return db.Key.from_path('blogs', name)
+
+class Post(db.Model):
+    title = db.StringProperty(required = True)
+    content = db.TextProperty(required = True)
+    created = db.DateTimeProperty(auto_now_add = True)
+    last_modified = db.DateTimeProperty(auto_now = True)
+
+    def render(self):
+        self._render_text = self.content.replace('\n', '<br>')
+        return render_str("blog/post.html", p = self)
+
+class BlogIndex(Handler):
+    def render_front(self, title="", content="", error=""):
+        posts = db.GqlQuery("SELECT * FROM Post ORDER BY created DESC LIMIT 5")
+        self.render('blog/index.html', title=title, content=content, error=error, posts = posts)
+
+    def get(self):
+        self.render_front()
+
+class NewPost(Handler):
+    def get(self):
+        self.render('blog/newpost.html')
+
+    def post(self):
+        title = self.request.get('title')
+        content = self.request.get('content')
+
+        if title and content:
+            p = Post(parent = blog_key(), title = title, content = content)
+            p.put()
+            self.redirect('/blog/%s' % str(p.key().id()))
+        else:
+            error = "we need both title and some text"
+            self.render("blog/newpost.html", title=title, content=content, error=error)
+
+class Permalink(NewPost):
+    def get(self, post_id):
+        key = db.Key.from_path('Post', int(post_id), parent=blog_key())
+        post = db.get(key)
+
+        if not post:
+            self.error(404)
+            return
+
+        self.render("blog/post.html", post = post)
+
+
+
+
 app = webapp2.WSGIApplication([
-    ('/', MainPage), ('/fizzbuzz', FizzBuzzHandler),('/rot13', RotHandler), ('/signup', SignUpHandler), ('/welcome', Welcome),
+    ('/', MainPage), ('/fizzbuzz', FizzBuzzHandler),('/rot13', RotHandler),
+    ('/signup', SignUpHandler), ('/welcome', Welcome),
+    ('/blog/?', BlogIndex), ('/blog/newpost', NewPost),('/blog/([0-9]+)', Permalink)
 ], debug=True)
