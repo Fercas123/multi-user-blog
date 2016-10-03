@@ -1,7 +1,6 @@
 import os
 import jinja2
 import webapp2
-import hashlib
 import hmac
 import random
 
@@ -34,6 +33,8 @@ class Handler(webapp2.RequestHandler):
 
     def render(self, template, **kw):
         self.write(self.render_str(template, **kw))
+
+
 
 class MainPage(Handler):
     def get(self):
